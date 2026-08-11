@@ -1,12 +1,17 @@
-import { Link } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 const Details = () => {
+  const navigation = useNavigation();
   return (
     <View>
       <Text>Details</Text>
-      <Link screen={"profile"}>Go to profile</Link>
+      {/* <Link screen={"profile"}>Go to profile</Link> */}
+
+      <Pressable onPress={() => navigation.navigate("profile")}>
+        <Text>Go to profile</Text>
+      </Pressable>
     </View>
   );
 };

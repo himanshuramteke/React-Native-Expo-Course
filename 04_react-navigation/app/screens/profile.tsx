@@ -1,10 +1,14 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 const Profile = () => {
+  const navigation = useNavigation();
   return (
     <View>
-      <Text>Profile</Text>
+      <Pressable onPress={() => navigation.goBack()}>
+        <Text>Go back</Text>
+      </Pressable>
     </View>
   );
 };

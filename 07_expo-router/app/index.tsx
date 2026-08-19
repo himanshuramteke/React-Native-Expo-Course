@@ -12,6 +12,7 @@ export default function Index() {
     >
       <Text>Home Screen</Text>
       <Link href={"/feed"}>Go to feed</Link>
+      <Link href={"/post/123"}>Go to post id</Link>
     </View>
   );
 }

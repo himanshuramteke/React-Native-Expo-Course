@@ -11,11 +11,12 @@ export default function Index() {
       }}
     >
       <Text>Home Screen</Text>
-      <Link href={"/feed/ndfsnffk"}>Go to feed</Link>
+      <Link href={"/feed"}>Go to feed</Link>
       <Link href={"/post/123"}>Go to post id</Link>
-      <Link href={"/profile/123"}>Go to profile</Link>
+      {/* <Link href={"/profile/123"}>Go to profile</Link> */}
       <Link href={"/admin/users/logs"}>Go to Logs</Link>
       <Link href={"/admin/reports/monthly"}>Go to monthly reports</Link>
+      <Link href={"/login"}>Go to Login</Link>
     </View>
   );
 }

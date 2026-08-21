@@ -2,12 +2,11 @@ import { Slot } from "expo-router";
 import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function RootLayout() {
+export default function ProfileLayout() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>My App Header</Text>
+      <Text>Profile</Text>
       <Slot />
-      <Text style={styles.footer}>My App Footer</Text>
     </SafeAreaView>
   );
 }

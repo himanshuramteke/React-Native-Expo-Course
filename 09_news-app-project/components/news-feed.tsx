@@ -4,12 +4,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import NewsCard from "./news-card";
+import { Header } from "./header";
+import { NewsCard } from "./news-card";
 
 const NewsFeed = () => {
   const [articles, setArticles] = useState<NewsArticle[]>([]);
@@ -20,17 +22,43 @@ const NewsFeed = () => {
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [category, setCategory] = useState("all");
-  const [country, setCountry] = useState("all");
+  const [country, setCountry] = useState("us");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchMode, setIsSearchMode] = useState(false);
 
   const loadNews = useCallback(
     async (pageNum: number = 1, reset: boolean = false) => {
       try {
+        setLoadingMore(pageNum > 1);
+        if (reset) {
+          setLoading(true);
+        }
+
         let response = await fetchTopHeadlines({
           page: pageNum,
           pageSize: 20,
           category: category === "all" ? undefined : category,
           country,
+          query: searchQuery || undefined,
         });
+
+        if (!response) {
+          setError(
+            "API key is missing. Please configure EXPO_PUBLIC_NEWS_API_KEY in your .env file.",
+          );
+          setArticles([]);
+          return;
+        }
+
+        if (!response.articles || response.articles.length === 0) {
+          if (reset) {
+            setArticles([]);
+          }
+          setHasMore(false);
+          setPage(pageNum);
+          return;
+        }
+
         if (reset) {
           setArticles(response.articles);
         } else {
@@ -40,23 +68,28 @@ const NewsFeed = () => {
         setHasMore(
           response.articles.length > 0 && pageNum * 20 < response.totalResults,
         );
+
         setPage(pageNum);
+        setError(null);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "failed to load news";
         setError(errorMessage);
+        if (reset) {
+          setArticles([]);
+        }
       } finally {
         setLoading(false);
         setRefreshing(false);
-        setLoading(false);
+        setLoadingMore(false);
       }
     },
-    [category, country],
+    [category, country, searchQuery],
   );
 
   useEffect(() => {
     loadNews(1, true);
-  }, [category, country, loadNews]);
+  }, [loadNews]);
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
@@ -82,6 +115,13 @@ const NewsFeed = () => {
     setPage(1);
     setHasMore(true);
   };
+
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+    setPage(1);
+    setHasMore(true);
+    setIsSearchMode(query.length > 0);
+  }, []);
 
   const renderFooter = () => {
     if (!loadingMore) return null;
@@ -113,13 +153,35 @@ const NewsFeed = () => {
 
   return (
     <View style={styles.container}>
-      {/* TODO: header */}
+      <Header
+        onSearch={handleSearch}
+        onCategoryChange={handleCategoryChange}
+        onCountryChange={handleCountryChange}
+        selectedCategory={category}
+        selectedCountry={country}
+        searchQuery={searchQuery}
+      />
       <FlatList
         data={articles}
         keyExtractor={(item, index) =>
           item.url + index.toString() || index.toString()
         }
-        renderItem={({ item }) => <NewsCard articles={item} />}
+        renderItem={({ item }) => <NewsCard article={item} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            tintColor="#6366F1"
+            colors={["#6366F1"]}
+          />
+        }
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
+        ListEmptyComponent={renderEmpty}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        stickyHeaderIndices={[]}
       />
     </View>
   );

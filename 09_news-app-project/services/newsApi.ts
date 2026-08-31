@@ -18,7 +18,7 @@ export const fetchTopHeadlines = async (params: FetchNewsParams = {}) => {
     query,
   } = params;
 
-  if (NEWS_API_KEY) {
+  if (!NEWS_API_KEY) {
     throw new Error("Api key not found");
   }
 
@@ -34,6 +34,14 @@ export const fetchTopHeadlines = async (params: FetchNewsParams = {}) => {
   try {
     const response = await fetch(url);
     const data: NewsApiResponse = await response.json();
+
+    if (data.status === "error") {
+      throw new Error(data.message || "API returned an error");
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
     return data;
   } catch (error) {

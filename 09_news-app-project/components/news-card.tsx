@@ -14,7 +14,7 @@ interface NewsCardProps {
   onPress?: () => void;
 }
 
-const NewsCard = ({ article, onPress }: NewsCardProps) => {
+export const NewsCard = ({ article, onPress }: NewsCardProps) => {
   const handlePress = () => {
     if (onPress) {
       onPress();
@@ -76,8 +76,6 @@ const NewsCard = ({ article, onPress }: NewsCardProps) => {
     </TouchableOpacity>
   );
 };
-
-export default NewsCard;
 
 const styles = StyleSheet.create({
   card: {

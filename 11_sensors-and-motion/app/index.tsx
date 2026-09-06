@@ -1,5 +1,5 @@
-import RotationIndicator from "@/components/rotation-indicator";
 import { View } from "react-native";
+import Compass from "../components/compass";
 
 export default function Index() {
   return (
@@ -11,7 +11,8 @@ export default function Index() {
       }}
     >
       {/* <TiltCounter /> */}
-      <RotationIndicator />
+      {/* <RotationIndicator /> */}
+      <Compass />
     </View>
   );
 }

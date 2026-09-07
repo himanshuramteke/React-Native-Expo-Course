@@ -1,4 +1,4 @@
-import LightMood from "@/components/light-mode";
+import StepCounter from "@/components/step-counter";
 import { View } from "react-native";
 
 export default function Index() {
@@ -13,7 +13,8 @@ export default function Index() {
       {/* <TiltCounter /> */}
       {/* <RotationIndicator /> */}
       {/* <Compass /> */}
-      <LightMood />
+      {/* <LightMood /> */}
+      <StepCounter />
     </View>
   );
 }

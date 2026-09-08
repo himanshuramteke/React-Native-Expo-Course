@@ -1,6 +1,5 @@
-import CameraScreen from "@/components/camera-screen";
-import { View } from "react-native";
+import RecordingScreen from "@/components/recording-screen";
 
 export default function Index() {
-  return <CameraScreen />;
+  return <RecordingScreen />;
 }

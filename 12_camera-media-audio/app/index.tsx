@@ -1,5 +1,5 @@
-import RecordingScreen from "@/components/recording-screen";
+import ProfilePicture from "@/components/profile-picture";
 
 export default function Index() {
-  return <RecordingScreen />;
+  return <ProfilePicture />;
 }
